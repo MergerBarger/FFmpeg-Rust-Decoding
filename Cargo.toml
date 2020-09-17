@@ -1,0 +1,8 @@
+[package]
+name = "frame_decode"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+libc = "0.2"
+rusty_ffmpeg = "0.2.5"
