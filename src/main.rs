@@ -123,19 +123,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         match reader.read(&mut buffer)? {
             0 => {
                unsafe { 
-                        let ret = av_parser_parse2(parser, context,
-                                                   &mut (*packet).data,
-                                                   &mut (*packet).size,
-                                                   &buffer[0],
-                                                   0,
-                                                   AV_NOPTS_VALUE,
-                                                   AV_NOPTS_VALUE, 0);
+                    let ret = av_parser_parse2(parser, context,
+                                               &mut (*packet).data,
+                                               &mut (*packet).size,
+                                               &buffer[0],
+                                               0,
+                                               AV_NOPTS_VALUE,
+                                               AV_NOPTS_VALUE, 0);
                     if (*packet).size > 0 {
                         decode(context, frame, packet, &args[2]).unwrap();
                     }
                 }
                 break;
-                },
+            },
             n => {
                 let buffer = &buffer[..n];
                 let mut size = n as i32;
