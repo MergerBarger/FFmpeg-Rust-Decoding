@@ -119,9 +119,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut reader = BufReader::new(file);
     let mut buffer = [0; INPUT_BUFFER_SIZE + AV_INPUT_BUFFER_PADDING_SIZE as usize];
-     loop {
+    loop {
         match reader.read(&mut buffer)? {
-            0 => { break; },
+            0 => {
+               unsafe { 
+                        let ret = av_parser_parse2(parser, context,
+                                                   &mut (*packet).data,
+                                                   &mut (*packet).size,
+                                                   &buffer[0],
+                                                   0,
+                                                   AV_NOPTS_VALUE,
+                                                   AV_NOPTS_VALUE, 0);
+                    if (*packet).size > 0 {
+                        decode(context, frame, packet, &args[2]).unwrap();
+                    }
+                }
+                break;
+                },
             n => {
                 let buffer = &buffer[..n];
                 let mut size = n as i32;
